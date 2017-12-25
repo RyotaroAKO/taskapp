@@ -120,13 +120,29 @@
                                     <!--2017-12-21 06:00:03 +0000-->
                                 </date>
                             </datePicker>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="カテゴリ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tn0-OO-uKc">
+                                <rect key="frame" x="10" y="436" width="355" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="IBU-K3-msO">
+                                <rect key="frame" x="10" y="467" width="355" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="fQw-ao-7Na" firstAttribute="trailing" secondItem="3el-kJ-7Ao" secondAttribute="trailing" id="6ln-qg-pv0"/>
+                            <constraint firstItem="IBU-K3-msO" firstAttribute="leading" secondItem="3el-kJ-7Ao" secondAttribute="leading" constant="10" id="9H3-7V-JUo"/>
+                            <constraint firstItem="3el-kJ-7Ao" firstAttribute="trailing" secondItem="Tn0-OO-uKc" secondAttribute="trailing" constant="10" id="9i1-1a-IYa"/>
+                            <constraint firstItem="Tn0-OO-uKc" firstAttribute="leading" secondItem="3el-kJ-7Ao" secondAttribute="leading" constant="10" id="A9e-QP-J91"/>
                             <constraint firstItem="3el-kJ-7Ao" firstAttribute="trailing" secondItem="iyM-5D-fbR" secondAttribute="trailing" constant="10" id="AFx-Kj-7H3"/>
                             <constraint firstItem="vVQ-ft-8E9" firstAttribute="top" secondItem="3el-kJ-7Ao" secondAttribute="top" constant="10" id="Ak9-f8-kHt"/>
                             <constraint firstItem="3el-kJ-7Ao" firstAttribute="trailing" secondItem="vVQ-ft-8E9" secondAttribute="trailing" constant="10" id="AlP-DQ-gj5"/>
+                            <constraint firstItem="IBU-K3-msO" firstAttribute="top" secondItem="Tn0-OO-uKc" secondAttribute="bottom" constant="10" id="FRo-si-Wuc"/>
                             <constraint firstItem="vVQ-ft-8E9" firstAttribute="leading" secondItem="3el-kJ-7Ao" secondAttribute="leading" constant="10" id="IIU-9o-hmC"/>
                             <constraint firstItem="3el-kJ-7Ao" firstAttribute="trailing" secondItem="wWq-Ti-HAp" secondAttribute="trailing" constant="10" id="IJJ-dj-0q7"/>
                             <constraint firstItem="wWq-Ti-HAp" firstAttribute="leading" secondItem="3el-kJ-7Ao" secondAttribute="leading" constant="10" id="KDS-3I-IpD"/>
@@ -138,10 +154,13 @@
                             <constraint firstItem="3el-kJ-7Ao" firstAttribute="trailing" secondItem="3Zu-Hm-Kmq" secondAttribute="trailing" constant="10" id="ejD-hZ-FxJ"/>
                             <constraint firstItem="3Zu-Hm-Kmq" firstAttribute="leading" secondItem="3el-kJ-7Ao" secondAttribute="leading" constant="10" id="mqu-8X-Pni"/>
                             <constraint firstItem="iyM-5D-fbR" firstAttribute="leading" secondItem="3el-kJ-7Ao" secondAttribute="leading" constant="10" id="uoJ-mM-6jd"/>
+                            <constraint firstItem="Tn0-OO-uKc" firstAttribute="top" secondItem="fQw-ao-7Na" secondAttribute="bottom" constant="10" id="yR4-qD-W4R"/>
+                            <constraint firstItem="3el-kJ-7Ao" firstAttribute="trailing" secondItem="IBU-K3-msO" secondAttribute="trailing" constant="10" id="yzc-3c-dec"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="3el-kJ-7Ao"/>
                     </view>
                     <connections>
+                        <outlet property="categoryTextField" destination="IBU-K3-msO" id="b0z-FT-Y8Y"/>
                         <outlet property="contentsTextView" destination="3Zu-Hm-Kmq" id="RQB-4v-Ur4"/>
                         <outlet property="datePicker" destination="fQw-ao-7Na" id="HfR-cx-nax"/>
                         <outlet property="titleTextField" destination="wWq-Ti-HAp" id="E9W-v5-DX2"/>
