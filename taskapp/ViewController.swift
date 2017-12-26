@@ -10,9 +10,10 @@ import UIKit
 import RealmSwift   // ←追加
 import UserNotifications    // 追加
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UISearchResultsUpdating {
     
     @IBOutlet weak var tableView: UITableView!
+    var searchController = UISearchController()
     
     // Realmインスタンスを取得する
     let realm = try! Realm()  // ←追加
@@ -22,11 +23,21 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     // 以降内容をアップデートするとリスト内は自動的に更新される。
     var taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: false)  // ←追加
     
+    var filteredData:[String] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.delegate = self
         tableView.dataSource = self
+        
+        searchController = UISearchController(searchResultsController: nil)
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.sizeToFit()
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.hidesNavigationBarDuringPresentation = false
+        
+        tableView.tableHeaderView = searchController.searchBar
     }
     
     override func didReceiveMemoryWarning() {
@@ -122,5 +133,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.reloadData()
     }
     
+    func updateSearchResults(for searchController: UISearchController) {
+        tableView.reloadData()
+        let predicate = NSPredicate(format: "category CONTAINS %@", searchController.searchBar.text!)
+        let filteredData = realm.objects(Task.self).filter(predicate)
+    }
+
 }
 
