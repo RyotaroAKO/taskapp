@@ -10,10 +10,13 @@ import UIKit
 import RealmSwift   // ←追加
 import UserNotifications    // 追加
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate{
     
     @IBOutlet weak var tableView: UITableView!
-    var searchController = UISearchController()
+    @IBOutlet weak var searchBar: UISearchBar!
+    
+    var filterdData = [String]()
+    var isSearching = false
     
     // Realmインスタンスを取得する
     let realm = try! Realm()  // ←追加
@@ -23,21 +26,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     // 以降内容をアップデートするとリスト内は自動的に更新される。
     var taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: false)  // ←追加
     
-    var filteredData:[String] = []
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.delegate = self
         tableView.dataSource = self
         
-        searchController = UISearchController(searchResultsController: nil)
-        searchController.searchResultsUpdater = self
-        searchController.searchBar.sizeToFit()
-        searchController.dimsBackgroundDuringPresentation = false
-        searchController.hidesNavigationBarDuringPresentation = false
-        
-        tableView.tableHeaderView = searchController.searchBar
+        searchBar.delegate = self
+        searchBar.returnKeyType = UIReturnKeyType.done
+    
     }
     
     override func didReceiveMemoryWarning() {
@@ -47,6 +44,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     // MARK: UITableViewDataSourceプロトコルのメソッド
     // データの数（＝セルの数）を返すメソッド
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if isSearching{
+            return filterdData.count
+        }
         return taskArray.count  // ←追加する
     }
     
@@ -56,7 +56,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         
         // Cellに値を設定する.
-        let task = taskArray[indexPath.row]
+        if isSearching{
+            let task = filterdData[indexPath.row]
+        } else {
+            let task = taskArray[indexPath.row]
+        }
+    
         cell.textLabel?.text = task.title
         
         let formatter = DateFormatter()
@@ -66,6 +71,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         cell.detailTextLabel?.text = dateString
         
         return cell
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        <#code#>
     }
     
     // MARK: UITableViewDelegateプロトコルのメソッド
@@ -131,12 +140,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadData()
-    }
-    
-    func updateSearchResults(for searchController: UISearchController) {
-        tableView.reloadData()
-        let predicate = NSPredicate(format: "category CONTAINS %@", searchController.searchBar.text!)
-        let filteredData = realm.objects(Task.self).filter(predicate)
     }
 
 }
