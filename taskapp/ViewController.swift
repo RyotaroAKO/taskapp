@@ -29,6 +29,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.delegate = self
         tableView.dataSource = self
         searchBar.delegate = self
+        searchBar.showsCancelButton = true
     }
     
     override func didReceiveMemoryWarning() {
