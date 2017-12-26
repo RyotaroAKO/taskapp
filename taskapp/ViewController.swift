@@ -15,9 +15,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     
-    var filterdData = [String]()
-    var isSearching = false
-    
     // Realmインスタンスを取得する
     let realm = try! Realm()  // ←追加
     
@@ -31,22 +28,28 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         tableView.delegate = self
         tableView.dataSource = self
-        
         searchBar.delegate = self
-        searchBar.returnKeyType = UIReturnKeyType.done
-    
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
+    // 検索文字の更新時に呼ばれるメソッド
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        taskArray = realm.objects(Task.self).filter("category  ==  '\(searchBar.text!)'")
+        tableView.reloadData()
+    }
+    
+    // 検索の終了時に呼ばれるメソッド
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar){
+        taskArray = realm.objects(Task.self).sorted(byKeyPath: "date", ascending:false)
+        tableView.reloadData()
+    }
+    
     // MARK: UITableViewDataSourceプロトコルのメソッド
     // データの数（＝セルの数）を返すメソッド
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if isSearching{
-            return filterdData.count
-        }
         return taskArray.count  // ←追加する
     }
     
@@ -56,12 +59,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         
         // Cellに値を設定する.
-        if isSearching{
-            let task = filterdData[indexPath.row]
-        } else {
-            let task = taskArray[indexPath.row]
-        }
-    
+        let task = taskArray[indexPath.row]
         cell.textLabel?.text = task.title
         
         let formatter = DateFormatter()
@@ -73,10 +71,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         return cell
     }
     
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        <#code#>
-    }
-    
     // MARK: UITableViewDelegateプロトコルのメソッド
     // 各セルを選択した時に実行されるメソッド
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -85,7 +79,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     // セルが削除が可能なことを伝えるメソッド
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath)-> UITableViewCellEditingStyle {
-        return .delete
+        return.delete
     }
     
     // Delete ボタンが押された時に呼ばれるメソッド
