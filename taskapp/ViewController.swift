@@ -10,7 +10,7 @@ import UIKit
 import RealmSwift   // ←追加
 import UserNotifications    // 追加
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UISearchResultsUpdating {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating {
     
     @IBOutlet weak var tableView: UITableView!
     var searchController = UISearchController()
