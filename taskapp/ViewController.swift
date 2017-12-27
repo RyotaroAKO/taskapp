@@ -38,7 +38,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     // 検索文字の更新時に呼ばれるメソッド
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        taskArray = realm.objects(Task.self).filter("category  ==  '\(searchBar.text!)'")
+        if !searchText.isEmpty {
+            taskArray = realm.objects(Task.self)
+                .filter("category  ==  '\(searchBar.text!)'")
+                .sorted(byKeyPath: "date", ascending:false)
+        }
+        else {
+            taskArray = realm.objects(Task.self)
+                .sorted(byKeyPath: "date", ascending:false)
+        }
         tableView.reloadData()
     }
     
@@ -46,6 +54,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar){
         taskArray = realm.objects(Task.self).sorted(byKeyPath: "date", ascending:false)
         tableView.reloadData()
+        
+        // キーボードを閉じる
+        view.endEditing(true)
     }
     
     // MARK: UITableViewDataSourceプロトコルのメソッド
